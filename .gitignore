@@ -1,1 +1,11 @@
 /node_modules
+
+*.js
+
+.env
+
+dist/**
+!dist/www/
+!dist/www/**
+
+!cypress/**

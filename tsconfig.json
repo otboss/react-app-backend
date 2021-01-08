@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "lib": [
+      "es2018",
+      "dom"
+    ]
+  },
+  "include": [
+    "**/*.ts"
+  ]
+}
