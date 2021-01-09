@@ -29,7 +29,7 @@ jobs:
         run: docker pull mysql
 
       - name: Start MySQL Database
-        run: docker run --name mysql -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql
+        run: docker run --name mysql -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql & sleep 20
         
       - name: Install Dependencies
         run: npm install
