@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "eval $(cat demo.env) node_modules/mocha/bin/mocha test/index.js",
-    "start-dev": "node_modules/typescript/bin/tsc --watch --outDir ./dist & node_modules/typescript/bin/tsc index.ts --outDir ./dist & sleep 10 && mkdir dist/assets & cp demo.env dist/demo.env; cd dist; eval $(cat demo.env) ../node_modules/nodemon/bin/nodemon.js dist/index.js --listen",
+    "start-dev": "node_modules/typescript/bin/tsc --watch --outDir ./dist & node_modules/typescript/bin/tsc index.ts --outDir ./dist & sleep 10 && mkdir dist/assets & cp demo.env dist/demo.env; cd dist; eval $(cat demo.env) ../node_modules/nodemon/bin/nodemon.js dist/index.js",
     "start": "eval $(cat .env) node dist/index.js"
   },
   "keywords": [],
