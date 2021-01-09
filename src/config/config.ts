@@ -22,7 +22,7 @@ export abstract class Config {
 
   /** The endpoints of this application*/
   public static routes = Object.freeze({
-    index: "/",
+    assets: "/assets",
     auth: "/auth",
     graphql: "/graphql",
   });

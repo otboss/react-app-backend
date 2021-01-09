@@ -3,20 +3,22 @@ import { graphqlHTTP } from "express-graphql";
 import { Config } from "./src/config/config";
 import { schema } from "./src/graphql/schema";
 import { resolvers } from "./src/graphql/resolvers";
-import { mutations } from "./src/graphql/mutations";
 import { Controller } from "./src/controller/Controller";
+import Conn from "./src/graphql/db";
 
 const app = express();
 
 app.use(Controller.Middleware.requestLimiter);
-
+app.use(Config.routes.assets, express.static('assets'));
 app.use('/graphql', graphqlHTTP({
   schema: schema,
-  rootValue: { ...resolvers, ...mutations },
+  rootValue: resolvers,
   graphiql: true,
 }));
 
 app.post(Config.routes.auth, Controller.RouterFunctions.auth);
 
-console.log(`Running a GraphQL API server at ${Config.baseURL}/graphql`);
-app.listen(Config.getEnvironment().backend_port);
+Conn.sync({ force: false }).then(() => {
+  console.log(`Running a GraphQL API server at ${Config.baseURL}/graphql`);
+  app.listen(Config.getEnvironment().backend_port);
+});

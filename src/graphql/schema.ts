@@ -3,46 +3,44 @@ import { buildSchema } from "graphql"
 export const schema = buildSchema(`
 type Query {
   hello: String
-  reviews(itemId: Int): [Reviews]
-  hardwareItems(offset: Int, limit: Int): [HardwareItems]
+  reviews(offset: Int, limit: Int, itemId: Int!): [Review]
+  hardwareItems(offset: Int, limit: Int): [HardwareItem]
+  orders(offset: Int, limit: Int, userId: Int!): [Orders]
 }
 
-type Users {
-  userId: ID!
+type User {
+  user_id: ID!
   email: String!
   username: String!
   password: String!
 }
 
-type HardwareItems {
-  itemId: ID!
+type HardwareItem {
+  item_id: ID!
   label: String!
   image: String!
   cost: Float!
   shipping_fee: Float!
   description: String!
   category: String!
+  rating: Float!
 }
 
-type Reviews {
-  reviewId: ID!
-  itemId: ID!
-  userId: ID!
+type Orders {
+  order_id: ID!
+  tracking_number: Int!
+}
+
+type Review {
+  review_id: ID!
+  user: User!
   message: String!
   rating: Float!
 }
 
 type OrderItems {
-  orderItemId: ID!
-  userId: ID!
-  itemId: ID!
+  order_item_id: ID!
+  item: HardwareItem!
   quantity: Float!
-}
-
-type Orders {
-  orderId: ID!
-  userId: ID!
-  tracking_number: Int!
-  orders: [OrderItems!]!
 }
 `);
