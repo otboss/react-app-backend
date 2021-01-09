@@ -13,6 +13,10 @@
     <pre>docker run --name mysql -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql</pre>
   </li>
   <li>
+    <span>Create Database</span>
+    <pre>docker exec mysql mysql --user="root" --password="root" --execute="CREATE DATABASE hardware_store"</pre>
+  </li>
+  <li>
     <span>Install dependencies</span>
     <pre>npm install</pre>
   </li>

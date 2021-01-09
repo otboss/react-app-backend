@@ -24,18 +24,21 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+        
       - name: Pull MySQL docker image
         run: docker pull mysql
 
-      - name: Start MySQL Database
+      - name: Start MySQL Server
         run: docker run --name mysql -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql & sleep 20
+
+      - name: Create Database
+        run: docker exec mysql mysql --user="root" --password="root" --execute="CREATE DATABASE hardware_store" & sleep 5
         
       - name: Install Dependencies
         run: npm install
-        
+
       - name: Start Server
-        run: npm run start-dev & sleep 60
+        run: npm run start-demo & sleep 20
 
       - name: Run Tests
         run: npm run test
