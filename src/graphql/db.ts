@@ -18,7 +18,7 @@ const UsersModel = Conn.define(Tables.UsersTable.table, {
     type: DataTypes.STRING,
     allowNull: false
   },
-  [Tables.UsersTable.columns.email]: {
+  [Tables.UsersTable.columns.username]: {
     type: DataTypes.STRING,
     allowNull: false
   },
@@ -72,7 +72,7 @@ const ReviewsModel = Conn.define(Tables.ReviewsTable.table, {
     primaryKey: true,
     autoIncrement: true
   },
-  [Tables.ReviewsTable.columns.comment]: {
+  [Tables.ReviewsTable.columns.message]: {
     type: DataTypes.STRING,
     allowNull: false
   },

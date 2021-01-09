@@ -7,4 +7,5 @@ export interface Environment {
 
   backend_domain: string;
   backend_port: number;
+  jwt_shared_secret: string;
 }

@@ -5,7 +5,32 @@ type Query {
   hello: String
   reviews(offset: Int, limit: Int, itemId: Int!): [Review]
   hardwareItems(offset: Int, limit: Int): [HardwareItem]
-  orders(offset: Int, limit: Int, userId: Int!): [Orders]
+  orders(offset: Int, limit: Int, userId: Int!): [Order]
+  orderItems(token: String!, order_id: Int!, offset: Int, limit: Int): [OrderItem]
+}
+
+type Mutation {
+  saveReview(review: ReviewInput): Review
+  saveOrder(order: OrderInput): Order
+  saveOrderItem(orderItem: OrderItemInput): OrderItem
+}
+
+input ReviewInput {
+  token: String!
+  item_id: String!
+  message: String!
+  rating: Float!
+}
+
+input OrderInput{
+  token: String!
+}
+
+input OrderItemInput{
+  order_id: Int!
+  item_id: Int!
+  quantity: Float!
+  token: String!
 }
 
 type User {
@@ -26,7 +51,7 @@ type HardwareItem {
   rating: Float!
 }
 
-type Orders {
+type Order {
   order_id: ID!
   tracking_number: Int!
 }
@@ -38,7 +63,7 @@ type Review {
   rating: Float!
 }
 
-type OrderItems {
+type OrderItem {
   order_item_id: ID!
   item: HardwareItem!
   quantity: Float!

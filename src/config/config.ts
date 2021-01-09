@@ -14,6 +14,7 @@ export abstract class Config {
       "mysql_port": environment.mysql_port,
       "backend_domain": environment.backend_domain,
       "backend_port": environment.backend_port,
+      "jwt_shared_secret": environment.jwt_shared_secret,
     }
   }
 
@@ -22,8 +23,11 @@ export abstract class Config {
 
   /** The endpoints of this application*/
   public static routes = Object.freeze({
+    index: "/",
+    app: "/app",
     assets: "/assets",
-    auth: "/auth",
+    signUp: "/sign_up",
+    signIn: "/sign_in",
     graphql: "/graphql",
   });
 

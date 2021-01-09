@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "eval $(cat demo.env) node_modules/mocha/bin/mocha test/index.js",
     "start-dev": "node_modules/typescript/bin/tsc --watch --outDir ./dist & node_modules/typescript/bin/tsc index.ts --outDir ./dist & sleep 10 && mkdir dist/assets & cp demo.env dist/demo.env; cd dist; eval $(cat demo.env) ../node_modules/nodemon/bin/nodemon.js dist/index.js --listen",
     "start": "eval $(cat .env) node dist/index.js"
   },
@@ -15,7 +15,10 @@
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
     "graphql": "^15.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.2.1",
     "mysql2": "^2.2.5",
+    "node-fetch": "^2.6.1",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {

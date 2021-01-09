@@ -34,7 +34,7 @@ export namespace Tables {
       "review_id": "review_id",
       "user_id": "user_id",
       "item_id": "item_id",
-      "comment": "comment",
+      "message": "message",
       "rating": "rating",
       "createdAt": "createdAt",
       "updatedAt": "updatedAt",

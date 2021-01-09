@@ -1,17 +1,18 @@
 import requestLimiter from "./middleware/request-limiter";
-import auth from "./router_functions/auth";
+import signUp from "./router_functions/signUp";
+import signIn from "./router_functions/signIn";
 
 export namespace Controller {
-
-  export abstract class Middleware {
+  export const Middleware = Object.freeze({
     /**
      * Request Rate Limiter Middleware
      * limits requests per ip address to 1200 per hour
      * */
-    public static requestLimiter = requestLimiter;
-  }
+    requestLimiter: requestLimiter
+  })
 
-  export abstract class RouterFunctions {
-    public static auth = auth;
-  }
+  export const RouterFunctions = Object.freeze({
+    signUp: signUp,
+    signIn: signIn
+  });
 }
