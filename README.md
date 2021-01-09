@@ -25,3 +25,9 @@
     <pre>npm run start</pre>
   </li>
 </ol>
+
+<h3>GraphQL Documentation</h3>
+<span>Run the following commend below to serve the GraphQL documentation files: </span>
+<pre>http-server ./schema_doc/</pre>
+<span>If the <b>http-server</b> command is not found it may be installed with: </span>
+<pre>npm install -g http-server</pre>
