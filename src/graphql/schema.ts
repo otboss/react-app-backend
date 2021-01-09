@@ -2,35 +2,20 @@ import { buildSchema } from "graphql"
 
 export const schema = buildSchema(`
 type Query {
-  hello: String
-  reviews(offset: Int, limit: Int, itemId: Int!): [Review]
+  reviews(offset: Int, limit: Int, item_id: Int!): [Review]
   hardwareItems(offset: Int, limit: Int): [HardwareItem]
-  orders(offset: Int, limit: Int, userId: Int!): [Order]
-  orderItems(token: String!, order_id: Int!, offset: Int, limit: Int): [OrderItem]
+  orders(token: String!, filter: String!, offset: Int, limit: Int): [Order]
+  orderItems(token: String!, filter: String!, order_id: Int!, offset: Int, limit: Int): [OrderItem]
 }
 
 type Mutation {
-  saveReview(review: ReviewInput): Review
-  saveOrder(order: OrderInput): Order
-  saveOrderItem(orderItem: OrderItemInput): OrderItem
-}
-
-input ReviewInput {
-  token: String!
-  item_id: String!
-  message: String!
-  rating: Float!
-}
-
-input OrderInput{
-  token: String!
+  saveReview(token: String!, item_id: Int!, message: String!, rating: Int!): Review
+  saveOrder(token: String!, order_items: [OrderItemInput!]!): Order
 }
 
 input OrderItemInput{
-  order_id: Int!
   item_id: Int!
   quantity: Float!
-  token: String!
 }
 
 type User {

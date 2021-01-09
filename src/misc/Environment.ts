@@ -8,4 +8,6 @@ export interface Environment {
   backend_domain: string;
   backend_port: number;
   jwt_shared_secret: string;
+
+  mysql_query_logging: boolean;
 }

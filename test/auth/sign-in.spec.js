@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 const assert = require("assert");
-const constants = require("../constants/constants");
+const constants = require("../constants");
 const Config = require("../../dist/src/config/config").Config;
 
 describe("Sign In", () => {
@@ -14,7 +14,6 @@ describe("Sign In", () => {
       "headers": { 'Content-Type': 'application/json' },
     });
     assert(response.status, 200);
-    constants.user.token = await response.text();
+    constants.user.token = (await response.text()).slice(1, -1);
   });
-
 });

@@ -12,6 +12,7 @@ export abstract class Config {
       "mysql_username": environment.mysql_username,
       "mysql_domain": environment.mysql_domain,
       "mysql_port": environment.mysql_port,
+      "mysql_query_logging": environment.mysql_query_logging.toString() == "true",
       "backend_domain": environment.backend_domain,
       "backend_port": environment.backend_port,
       "jwt_shared_secret": environment.jwt_shared_secret,

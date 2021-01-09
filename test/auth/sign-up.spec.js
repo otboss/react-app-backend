@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const assert = require("assert");
 const Model = require("../../dist/src/graphql/db").Model;
 const Tables = require("../../dist/src/graphql/tables").Tables;
-const constants = require("../constants/constants");
+const constants = require("../constants");
 const Config = require("../../dist/src/config/config").Config;
 
 describe("Sign Up", () => {
