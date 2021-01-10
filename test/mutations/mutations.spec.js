@@ -16,7 +16,7 @@ describe("Mutations", () => {
       "rating": 0,
     };
     // Create test item
-    item.item_id = (await Model.HardwareItems.create(item,))["dataValues"]["item_id"];
+    item.item_id = (await Model.HardwareItems.create(item))["dataValues"]["item_id"];
     constants.hardware_item = item;
   })
 
@@ -26,9 +26,9 @@ describe("Mutations", () => {
       "body": JSON.stringify({ "query": ` mutation{  saveOrder(order_items:[{item_id: ${constants.hardware_item.item_id}, quantity: 1}], token: "${constants.user.token}"){ order_id } }`, "variables": null }),
       "headers": { 'Content-Type': 'application/json' },
     });
-    assert(response.status, 200);
+    assert.strictEqual(response.status, 200);
     const responseJSON = await response.json();
-    assert(typeof (responseJSON["error"]), "undefined");
+    assert.strictEqual(typeof (responseJSON["errors"]), "undefined");
   });
 
   it("Should save review", async () => {
@@ -37,8 +37,8 @@ describe("Mutations", () => {
       "body": JSON.stringify({ "query": ` mutation{  saveReview(token: "${constants.user.token}", item_id: ${constants.hardware_item.item_id}, message: "a good product", rating: 5){ review_id } }`, "variables": null }),
       "headers": { 'Content-Type': 'application/json' },
     });
-    assert(response.status, 200);
+    assert.strictEqual(response.status, 200);
     const responseJSON = await response.json();
-    assert(typeof (responseJSON["error"]), "undefined");
+    assert.strictEqual(typeof (responseJSON["errors"]), "undefined");
   });
 });

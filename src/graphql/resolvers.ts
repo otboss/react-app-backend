@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken";
+import { Op } from "sequelize";
 import { Config } from "../config/config";
 import { HardwareItem } from "../misc/HardwareItem";
 import { Order } from "../misc/Order";
@@ -9,12 +10,15 @@ import { Model } from "./db";
 import { Tables } from "./tables";
 
 const Query = {
-  getUserByUsername: async (args: User): Promise<User> => {
+  userFromUsername: async (args: User): Promise<User> => {
     return await Model.Users.findOne({
       logging: Config.getEnvironment().mysql_query_logging,
       where: {
-        [Tables.UsersTable.columns.username]: args.username,
-      }
+        [Op.or]: [
+          { [Tables.UsersTable.columns.username]: args.username, },
+          { [Tables.UsersTable.columns.email]: args.email, }
+        ]
+      },
     });
   },
   user: async (args: User): Promise<User> => {
@@ -32,7 +36,12 @@ const Query = {
     return await Model.HardwareItems.findAll({
       offset: args.offset,
       limit: args.limit,
-      logging: Config.getEnvironment().mysql_query_logging
+      logging: Config.getEnvironment().mysql_query_logging,
+      where: {
+        [Tables.HardwareItemsTable.columns.label]: {
+          [Op.like]: `%${args.filter}%`,
+        }
+      }
     });
   },
   reviews: async (args: ReviewsArgs): Promise<Array<Review>> => {
@@ -42,6 +51,9 @@ const Query = {
       offset: args.offset,
       limit: args.limit,
       logging: Config.getEnvironment().mysql_query_logging,
+      order: [
+        [Tables.ReviewsTable.columns.createdAt, 'DESC'],
+      ],
       where: {
         [Tables.ReviewsTable.columns.item_id]: args.item_id
       }
@@ -54,6 +66,7 @@ const Query = {
           [Tables.UsersTable.columns.user_id]: review.user_id
         }
       });
+      delete review.user.email;
       delete review.user.password;
     }
     return reviews;
@@ -63,6 +76,9 @@ const Query = {
     const previousUser: User = await Query.user(user);
     return await Model.Orders.findOne({
       logging: Config.getEnvironment().mysql_query_logging,
+      order: [
+        [Tables.OrdersTable.columns.createdAt, 'DESC'],
+      ],
       where: {
         [Tables.OrdersTable.columns.user_id]: previousUser.user_id,
         [Tables.OrdersTable.columns.order_id]: args.order_id,
@@ -101,14 +117,18 @@ const Query = {
         [Tables.OrderItemsTable.columns.order_id]: args.order_id,
       }
     });
-    for (let x = 0; x < orderItems.length; x++) {
+    for (let x = orderItems.length - 1; x > -1; x--) {
       const orderItem: OrderItem = orderItems[x];
       orderItem.item = await Model.HardwareItems.findOne({
         logging: Config.getEnvironment().mysql_query_logging,
         where: {
           [Tables.HardwareItemsTable.columns.item_id]: orderItem.item_id,
+          [Tables.HardwareItemsTable.columns.label]: {
+            [Op.like]: `%${args.filter}%`,
+          }
         }
       });
+      if (orderItem.item == null) orderItems.splice(x, 1);
     }
     return orderItems;
   },
@@ -119,11 +139,24 @@ const Mutation = {
     if (args.message.length == 0) throw "message must not be empty";
     let user: User = (await jwt.verify(args.token, Config.getEnvironment().jwt_shared_secret))["user"];
     user = await Query.user(user);
+    delete user.password;
     const review: Review = new Review();
     review.item_id = args.item_id
     review.user_id = user.user_id;
     review.message = args.message;
     review.rating = parseInt((args.rating > 5 ? 5 : args.rating < 1 ? 1 : args.rating).toString());
+    const hardwareItem: HardwareItem = await Model.HardwareItems.findOne({
+      logging: Config.getEnvironment().mysql_query_logging,
+      where: {
+        [Tables.HardwareItemsTable.columns.item_id]: review.item_id
+      }
+    });
+    if (hardwareItem == null) throw "review item not found"
+    await hardwareItem["update"]({
+      [Tables.HardwareItemsTable.columns.rating]: (hardwareItem.rating + review.rating) / 2,
+    }, {
+      logging: Config.getEnvironment().mysql_query_logging,
+    });
     const reviewId: number = (await Model.Reviews.create({
       [Tables.ReviewsTable.columns.user_id]: review.user_id,
       [Tables.ReviewsTable.columns.message]: review.message,
@@ -132,19 +165,8 @@ const Mutation = {
     }, {
       logging: Config.getEnvironment().mysql_query_logging,
     }))["dataValues"][Tables.ReviewsTable.columns.review_id];
-    const hardwareItem: HardwareItem = await Model.HardwareItems.findOne({
-      logging: Config.getEnvironment().mysql_query_logging,
-      where: {
-        [Tables.HardwareItemsTable.columns.item_id]: review.item_id
-      }
-    });
-    await hardwareItem["update"]({
-      [Tables.HardwareItemsTable.columns.rating]: (hardwareItem.rating + review.rating) / 2,
-    }, {
-      logging: Config.getEnvironment().mysql_query_logging,
-    });
     review.review_id = reviewId;
-    delete user.password;
+
     review.user = user;
     return review;
   },
@@ -202,6 +224,7 @@ interface OrderSaveArgs {
 interface HardwareItemsArgs {
   offset: number;
   limit: number;
+  filter: string;
 }
 
 interface ReviewsArgs {
@@ -213,6 +236,7 @@ interface ReviewsArgs {
 interface OrderArgs {
   order_id: number;
   token: string;
+  filter: string;
 }
 
 interface OrdersArgs {
@@ -227,6 +251,7 @@ interface OrderItemsArgs {
   order_id: number;
   offset: number;
   limit: number;
+  filter: string;
 }
 
 export const resolvers = {

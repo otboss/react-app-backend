@@ -3,7 +3,7 @@ import { buildSchema } from "graphql"
 export const schema = buildSchema(`
 type Query {
   reviews(offset: Int, limit: Int, item_id: Int!): [Review]
-  hardwareItems(offset: Int, limit: Int): [HardwareItem]
+  hardwareItems(filter: String!, offset: Int, limit: Int): [HardwareItem]
   orders(token: String!, filter: String!, offset: Int, limit: Int): [Order]
   orderItems(token: String!, filter: String!, order_id: Int!, offset: Int, limit: Int): [OrderItem]
 }

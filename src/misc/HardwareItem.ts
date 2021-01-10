@@ -1,3 +1,5 @@
+import { Review } from "./Review";
+
 /**
  * Structures information for a hardware item
  * */
@@ -31,11 +33,4 @@ export enum ItemCategory {
   "Screws and Anchors",
   "Signs",
   "Angles, Braces and Brackets",
-}
-
-interface Review {
-  username: string;
-  comment: string;
-  rating: number;
-  timestamp: number;
 }

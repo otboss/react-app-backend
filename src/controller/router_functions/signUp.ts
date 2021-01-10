@@ -4,8 +4,7 @@ import { User } from "../../misc/User";
 
 const signUp = async function (req, res) {
   const user: User = req.body;
-  const previousUser: User = await resolvers.getUserByUsername(user);
-  if (previousUser != null) {
+  if (await resolvers.userFromUsername(user) != null) {
     res.status(403).json({
       "error": "username already taken"
     });

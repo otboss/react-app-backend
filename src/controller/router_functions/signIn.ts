@@ -16,7 +16,7 @@ const signIn = async function (req, res) {
     return;
   }
   const token = await jwt.sign({ user }, Config.getEnvironment().jwt_shared_secret, { expiresIn: '1h' });
-  res.status(200).json(token);
+  res.status(200).send(token);
 }
 
 export default signIn;

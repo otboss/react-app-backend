@@ -9,12 +9,13 @@
     <pre>docker pull mysql</pre>
   </li>
   <li>
-    <span>Configure and start database</span>
+    <span>Configure and start MySQL server</span>
     <pre>docker run --name mysql -p 127.0.0.1:3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql</pre>
   </li>
   <li>
-    <span>Create Database</span>
+    <span>Create Database.</span>
     <pre>docker exec mysql mysql --user="root" --password="root" --execute="CREATE DATABASE hardware_store"</pre>
+    <p>WARNING: Do not use this method in production!</p>
   </li>
   <li>
     <span>Install dependencies</span>
@@ -25,7 +26,7 @@
     <pre>npm run start-dev</pre>
   </li>
   <li>
-    <span>For production, copy the 'dist' and 'node_modules' folders onto the production server and place enviroment variables in a file called '.env' in the root of the 'dist' folder. The server can then be started using the command: </span>
+    <span>For production, copy the 'dist' and 'node_modules' folders onto the production server and place enviroment variables in a file called '.env' in the containing folder's root. The server can then be started using the command: </span>
     <pre>npm run start</pre>
   </li>
 </ol>

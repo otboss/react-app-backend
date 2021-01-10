@@ -16,11 +16,13 @@ const UsersModel = Conn.define(Tables.UsersTable.table, {
   },
   [Tables.UsersTable.columns.email]: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   [Tables.UsersTable.columns.username]: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   [Tables.UsersTable.columns.password]: {
     type: DataTypes.STRING,
@@ -121,7 +123,7 @@ OrdersModel.hasMany(OrderItemsModel, {
 });
 OrderItemsModel.belongsTo(OrdersModel);
 HardwareItemsModel.hasMany(OrderItemsModel, {
-  "foreignKey": Tables.HardwareItemsTable.columns.item_id
+  "foreignKey": Tables.HardwareItemsTable.columns.item_id,
 });
 OrderItemsModel.belongsTo(HardwareItemsModel);
 HardwareItemsModel.hasMany(ReviewsModel, {
