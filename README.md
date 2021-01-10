@@ -2,6 +2,22 @@
 
 <span>Corresponding Frontend: <a href="https://github.com/otboss/react-app">https://github.com/otboss/react-app</a></span>
 
+<p>Key tools used are:</p>
+<ul>
+  <li>
+    <span>JWT Authentication</span>
+  </li>
+  <li>
+    <span>MySQL Docker Container</span>
+  </li>
+  <li>
+    <span>GraphQL</span>
+  </li>
+  <li>
+    <span>Sequelize ORM</span>
+  </li>
+</ul>
+
 <h3>Getting Started</h3>
 <ol>
   <li>
@@ -33,6 +49,6 @@
 
 <h3>GraphQL Documentation</h3>
 <span>Run the following commend below to serve the GraphQL documentation files: </span>
-<pre>http-server ./schema_doc/</pre>
+<pre>http-server schema_doc</pre>
 <span>If the <b>http-server</b> command is not found it may be installed with: </span>
 <pre>npm install -g http-server</pre>

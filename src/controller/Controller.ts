@@ -1,4 +1,4 @@
-import requestLimiter from "./middleware/request-limiter";
+import requestLimiter from "./middleware/requestLimiter";
 import signUp from "./router_functions/signUp";
 import signIn from "./router_functions/signIn";
 
@@ -9,7 +9,7 @@ export namespace Controller {
      * limits requests per ip address to 1200 per hour
      * */
     requestLimiter: requestLimiter
-  })
+  });
 
   export const RouterFunctions = Object.freeze({
     signUp: signUp,
