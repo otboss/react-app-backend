@@ -4,11 +4,8 @@ let blockedUsers: Record<string, IPAddress> = {};
 
 const requestLimiter = async function (req, res, next) {
   const ip: string = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  let ipAddress: IPAddress = blockedUsers[ip];
-  if (ipAddress == null) {
-    ipAddress = new IPAddress(ip);
-  }
-  else if (Date.now() - ipAddress.timestamp >= 3600000) {
+  const ipAddress: IPAddress = blockedUsers[ip] == null ? new IPAddress(ip) : blockedUsers[ip];
+  if (Date.now() - ipAddress.timestamp >= 3600000) {
     ipAddress.count = 0;
     ipAddress.timestamp = Date.now();
   }

@@ -41,11 +41,13 @@
     <span>Start server (development)</span>
     <pre>npm run start-dev</pre>
   </li>
-  <li>
-    <span>For production, copy the 'dist' and 'node_modules' folders onto the production server and place enviroment variables in a file called '.env' in the containing folder's root. The server can then be started using the command: </span>
-    <pre>npm run start</pre>
-  </li>
 </ol>
+
+<h3>Production</h3>
+<span>For production, build the project using the command: </span> 
+<pre>npm run build</pre>
+<span>Once built, copy the 'dist' and 'node_modules' folders onto the production server and place enviroment variables in a file called '.env' in the containing folder's root. The server can then be started using the command:</span>
+<pre>eval $(cat .env) node dist/index.js</pre>
 
 <h3>GraphQL Documentation</h3>
 <span>Run the following commend below to serve the GraphQL documentation files: </span>

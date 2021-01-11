@@ -139,13 +139,4 @@ export abstract class Model {
   public static OrderItems: ModelCtor<any> = OrderItemsModel;
 }
 
-// Model.HardwareItems.create({
-//   "label": "Rubber Mallet",
-//   "image": "/assets/rubber_mallet.png",
-//   "cost": 240.00,
-//   "shipping_fee": 10.00,
-//   "description": "Standard issue rubber mallet",
-//   "category": "Tools",
-// });
-
 export default Conn;

@@ -32,7 +32,7 @@ const Query = {
   },
   hardwareItems: async (args: HardwareItemsArgs): Promise<Array<HardwareItem>> => {
     args.offset = args.offset == null ? 0 : args.offset;
-    args.limit = args.limit == null ? 40 : args.limit;
+    args.limit = args.limit == null ? 40 : args.limit > 100 ? 100 : args.limit;
     return await Model.HardwareItems.findAll({
       offset: args.offset,
       limit: args.limit,
@@ -46,7 +46,7 @@ const Query = {
   },
   reviews: async (args: ReviewsArgs): Promise<Array<Review>> => {
     args.offset = args.offset == null ? 0 : args.offset;
-    args.limit = args.limit == null ? 40 : args.limit;
+    args.limit = args.limit == null ? 40 : args.limit > 100 ? 100 : args.limit;
     const reviews: Array<Review> = await Model.Reviews.findAll({
       offset: args.offset,
       limit: args.limit,
@@ -89,7 +89,7 @@ const Query = {
     const user: User = (await jwt.verify(args.token, Config.getEnvironment().jwt_shared_secret))["user"];
     const previousUser: User = await Query.user(user);
     args.offset = args.offset == null ? 0 : args.offset;
-    args.limit = args.limit == null ? 40 : args.limit;
+    args.limit = args.limit == null ? 40 : args.limit > 100 ? 100 : args.limit;
     return await Model.Orders.findAll({
       offset: args.offset,
       limit: args.limit,
@@ -157,7 +157,7 @@ const Mutation = {
     }, {
       logging: Config.getEnvironment().mysql_query_logging,
     });
-    const reviewId: number = (await Model.Reviews.create({
+    const insertId: number = (await Model.Reviews.create({
       [Tables.ReviewsTable.columns.user_id]: review.user_id,
       [Tables.ReviewsTable.columns.message]: review.message,
       [Tables.ReviewsTable.columns.rating]: review.rating,
@@ -165,8 +165,7 @@ const Mutation = {
     }, {
       logging: Config.getEnvironment().mysql_query_logging,
     }))["dataValues"][Tables.ReviewsTable.columns.review_id];
-    review.review_id = reviewId;
-
+    review.review_id = insertId;
     review.user = user;
     return review;
   },
@@ -198,13 +197,14 @@ const Mutation = {
     return order;
   },
   saveUser: async (args: User): Promise<User> => {
-    await Model.Users.create({
+    const insertId: number = (await Model.Users.create({
       [Tables.UsersTable.columns.email]: args.email,
       [Tables.UsersTable.columns.password]: args.password,
       [Tables.UsersTable.columns.username]: args.username,
     }, {
       logging: Config.getEnvironment().mysql_query_logging,
-    })
+    }))["dataValues"][Tables.OrdersTable.columns.user_id];
+    args.user_id = insertId;
     return args;
   },
 }
